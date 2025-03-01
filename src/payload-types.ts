@@ -190,7 +190,7 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | LogoSliderBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -727,6 +727,40 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogoSliderBlock".
+ */
+export interface LogoSliderBlock {
+  title?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  logos?:
+    | {
+        logo: string | Media;
+        alt: string;
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  backgroundColor?: ('default' | 'dark' | 'light') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'logoSlider';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1015,6 +1049,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        logoSlider?: T | LogoSliderBlockSelect<T>;
       };
   meta?:
     | T
@@ -1111,6 +1146,25 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogoSliderBlock_select".
+ */
+export interface LogoSliderBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  logos?:
+    | T
+    | {
+        logo?: T;
+        alt?: T;
+        link?: T;
+        id?: T;
+      };
+  backgroundColor?: T;
   id?: T;
   blockName?: T;
 }
