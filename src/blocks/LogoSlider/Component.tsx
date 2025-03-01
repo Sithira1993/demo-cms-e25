@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { cn } from '@/utilities/ui'
 import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
@@ -13,10 +13,20 @@ type Props = LogoSliderBlockProps & {
 
 export const LogoSliderBlock: React.FC<Props> = (props) => {
   const { className, title, description, logos, backgroundColor = 'default' } = props
+  const [duplicatedLogos, setDuplicatedLogos] = useState<typeof logos>([])
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // Duplicate logos to ensure we have enough for continuous scrolling
+  useEffect(() => {
+    if (logos && logos.length > 0) {
+      // Create 3 copies of the logos array to ensure we have enough for the animation
+      setDuplicatedLogos([...logos, ...logos, ...logos])
+    }
+  }, [logos])
 
   return (
     <div className={cn('py-12', className)}>
-      <div className="container">
+      <div className="h-[184px]">
         {title && (
           <h2
             className={cn('text-2xl font-bold mb-4 text-center', {
@@ -39,13 +49,16 @@ export const LogoSliderBlock: React.FC<Props> = (props) => {
           </div>
         )}
 
-        <div className="overflow-hidden">
-          <div className="flex items-center justify-center gap-8 md:gap-12 lg:gap-16 flex-wrap">
-            {logos?.map((logoItem, index) => {
+        <div className="overflow-hidden" ref={containerRef}>
+          <div className="flex items-center gap-8 md:gap-12 lg:gap-16 animate-scroll">
+            {duplicatedLogos?.map((logoItem, index) => {
               if (!logoItem.logo || typeof logoItem.logo === 'string') return null
 
               const LogoComponent = (
-                <div key={index} className="w-24 md:w-32 h-16 flex items-center justify-center p-2">
+                <div
+                  key={index}
+                  className="w-[184px] md:w-32 h-[184px] flex-shrink-0 flex items-center justify-center p-2"
+                >
                   <Media
                     resource={logoItem.logo}
                     imgClassName="max-h-full object-contain"
@@ -61,7 +74,7 @@ export const LogoSliderBlock: React.FC<Props> = (props) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     key={index}
-                    className="transition-opacity hover:opacity-80"
+                    className="transition-opacity hover:opacity-80 flex-shrink-0"
                   >
                     {LogoComponent}
                   </a>
