@@ -56,7 +56,7 @@ export const LogoSlider: Block = {
           type: 'text',
           label: 'Link URL (Optional)',
           required: false,
-        }
+        },
       ],
     },
     {
