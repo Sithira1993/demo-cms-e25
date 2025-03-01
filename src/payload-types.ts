@@ -190,7 +190,16 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | LogoSliderBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | LogoSliderBlock
+    | ParallaxBlock
+    | TitleContentBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -761,6 +770,52 @@ export interface LogoSliderBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParallaxBlock".
+ */
+export interface ParallaxBlock {
+  title: string;
+  subtitle?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  backgroundImage: string | Media;
+  textColor?: ('light' | 'dark') | null;
+  textAlignment?: ('left' | 'center' | 'right') | null;
+  height?: ('small' | 'medium' | 'large' | 'fullScreen') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'parallaxBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TitleContentBlock".
+ */
+export interface TitleContentBlock {
+  smallTitle?: string | null;
+  mainTitle: string;
+  subtitle?: string | null;
+  alignment?: ('left' | 'center' | 'right') | null;
+  backgroundColor?: ('white' | 'light' | 'dark' | 'primary') | null;
+  textColor?: ('dark' | 'light' | 'primary') | null;
+  size?: ('small' | 'medium' | 'large') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'titleContentBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1050,6 +1105,8 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         logoSlider?: T | LogoSliderBlockSelect<T>;
+        parallaxBlock?: T | ParallaxBlockSelect<T>;
+        titleContentBlock?: T | TitleContentBlockSelect<T>;
       };
   meta?:
     | T
@@ -1165,6 +1222,36 @@ export interface LogoSliderBlockSelect<T extends boolean = true> {
         id?: T;
       };
   backgroundColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParallaxBlock_select".
+ */
+export interface ParallaxBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  description?: T;
+  backgroundImage?: T;
+  textColor?: T;
+  textAlignment?: T;
+  height?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TitleContentBlock_select".
+ */
+export interface TitleContentBlockSelect<T extends boolean = true> {
+  smallTitle?: T;
+  mainTitle?: T;
+  subtitle?: T;
+  alignment?: T;
+  backgroundColor?: T;
+  textColor?: T;
+  size?: T;
   id?: T;
   blockName?: T;
 }
