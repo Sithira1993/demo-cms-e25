@@ -10,9 +10,11 @@ import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { Media } from '@/collections/Media'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -89,6 +91,12 @@ export const plugins: Plugin[] = [
         return [...defaultFields, ...searchFields]
       },
     },
+  }),
+  vercelBlobStorage({
+    collections: {
+      [Media.slug]: true,
+    },
+    token: process.env.BLOB_READ_WRITE_TOKEN || '',
   }),
   payloadCloudPlugin(),
 ]
