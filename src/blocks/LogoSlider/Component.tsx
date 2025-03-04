@@ -25,7 +25,7 @@ export const LogoSliderBlock: React.FC<Props> = (props) => {
   }, [logos])
 
   return (
-    <div className={cn('py-12', className)}>
+    <div className={cn('py-12 bg-white', className)}>
       <div className="h-[184px]">
         {title && (
           <h2
